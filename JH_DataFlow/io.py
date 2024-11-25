@@ -5,6 +5,7 @@ from typing import Dict, List
 import yaml
 import numpy as np
 import cv2
+from pathlib import Path
 
 def read_json(path: str) -> Dict:
     '''Reads a json file and returns the content as a dictionary.'''
@@ -66,5 +67,25 @@ def save_points_bin(path: str, points: np.ndarray) -> bool:
         print(f"ERROR: {e}")
         return False
 
+def list_files_by_extension(dir_path: str, file_extension: str) -> List[str]:
+    """
+    列出指定目录下所有指定后缀的文件的绝对路径，并按文件名排序。
+    Args:
+        dir_path (str): 目标文件夹路径。
+        file_extension (str): 文件后缀（例如 '.json'）。
 
-
+    Returns:
+        List[str]: 排序后的文件绝对路径列表。
+    """
+    # 转换为 Path 对象
+    folder_path = Path(dir_path)
+    
+    # 检查路径是否存在
+    if not folder_path.is_dir():
+        raise ValueError(f"The specified path '{dir_path}' is not a valid directory.")
+    
+    # 匹配指定后缀文件并排序
+    files = sorted(folder_path.glob(f"*{file_extension}"))
+    
+    # 转换为绝对路径字符串
+    return [str(file.resolve()) for file in files]
