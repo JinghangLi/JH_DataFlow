@@ -77,15 +77,9 @@ def list_files_by_extension(dir_path: str, file_extension: str) -> List[str]:
     Returns:
         List[str]: 排序后的文件绝对路径列表。
     """
-    # 转换为 Path 对象
     folder_path = Path(dir_path)
-    
-    # 检查路径是否存在
     if not folder_path.is_dir():
         raise ValueError(f"The specified path '{dir_path}' is not a valid directory.")
     
-    # 匹配指定后缀文件并排序
     files = sorted(folder_path.glob(f"*{file_extension}"))
-    
-    # 转换为绝对路径字符串
     return [str(file.resolve()) for file in files]
